@@ -1,0 +1,39 @@
+v1= 10: [ 3.4   2.1 0   0   0   5.6 0   0   8.9 9.1 ]
+v2= 11: [ 3.4   2.1 0   1e-07   0   5.6 0   0   8.9 9.1 0 ]
+v3= 11: [ 0 1.3 0   3.5 -4.6    -5.6    0   0   -8.9    9.2 -1 ]
+
+sllp1= [ 3.4 + 2.1 x + 5.6 x^5 + 8.9 x^8 + 9.1 x^9 ]
+sllp2= [ 3.4 + 2.1 x + 5.6 x^5 + 8.9 x^8 + 9.1 x^9 ]
+sllp3= [ 1.3 x + 3.5 x^3 - 4.6 x^4 - 5.6 x^5 - 8.9 x^8 + 9.2 x^9 - 1 x^10 ]
+
+sllp1(1)= 29.1
+sllp1(3.3)= 549717
+sllp1(-5)= -1.43144e+07
+sllp2(1)= 29.1
+sllp2(3.3)= 549717
+sllp2(-5)= -1.43144e+07
+sllp3(1)= -6.1
+sllp3(3.3)= 146050
+sllp3(-5)= -3.11968e+07
+
+sllp1 == sllp1? true
+sllp2 == sllp2? true
+sllp3 == sllp3? true
+sllp1 == sllp2? true
+sllp2 == sllp1? true
+sllp1 == sllp3? false
+sllp3 == sllp1? false
+sllp2 == sllp3? false
+sllp3 == sllp2? false
+
+sllp1 + sllp2= [ 6.8 + 4.2 x + 11.2 x^5 + 17.8 x^8 + 18.2 x^9 ]
+sllp2 + sllp3= [ 3.4 + 3.4 x + 3.5 x^3 - 4.6 x^4 + 18.3 x^9 - 1 x^10 ]
+
+INDICES
+0 1
+1 3
+5 4
+8 5
+9 8
+
+INDICES QUE NO TIENE PAREJA: 0 3 4 9 10
