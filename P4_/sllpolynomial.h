@@ -50,20 +50,22 @@ bool IsNotZero(const double val, const double eps = EPS) {
 // FASE II
 // constructor
 SllPolynomial::SllPolynomial(const vector_t<double>& v, const double eps) {
-  // poner el código aquí
-  SllPolyNode sll; // nodos
-  pair_double_t sv; // datos, sparseVector
-  for (int i = v.get_size() - 1; i >= 0; i--)
-    if(IsNotZero(v.at(i), eps)) {
-      sv.set(v.at(i), i);  // se establece como dato el valor del vector != 0
-      SllPolyNode* aux = new SllPolyNode(sv);  // con un puntero apunto al valor guardado en sv
-      assert (aux != NULL);  // comprobar que el nodo no sea nulo
-      push_front(aux);  // insertar el nodo a la lista invocante
-    }
-  // para ver cuál es la cabeza...
-  // std::cout << get_head()->get_data() << " " << std::endl;
-}
 
+  SllPolyNode sll;  // nodos
+  pair_double_t sv; // datos, sparseVector
+
+  for (int i = v.get_size() - 1; i >= 0; i--)
+    // se establece como dato el valor del vector != 0
+    if (IsNotZero(v.at(i), eps)) {
+      sv.set(v.at(i), i);
+      // con un puntero apunto al valor guardado en sv
+      SllPolyNode* aux = new SllPolyNode(sv);
+      // comprobar que el nodo no sea nulo
+      assert (aux != NULL);
+      // insertar el nodo a la lista invocante
+      push_front(aux);
+    }
+}
 
 // E/S
 void SllPolynomial::Write(std::ostream& os) const {
@@ -86,40 +88,40 @@ void SllPolynomial::Write(std::ostream& os) const {
   os << " ]" << std::endl;
 }
 
+
 std::ostream& operator<<(std::ostream& os, const SllPolynomial& p) {
   p.Write(os);
   return os;
 }
-
-
 // Operaciones con polinomios
-
 // FASE III
 // Evaluación de un polinomio representado por lista simple
 double SllPolynomial::Eval(const double x) const {
+  
   double result{0.0};
-  // poner el código aquí
-  SllPolyNode* nodo = get_head();  // nodo apunta a la cabeza
-  // double paraElevar{0}; // recogemos el valor del valor que apunta el nodo
+  // nodo apunta a la cabeza
+  SllPolyNode* nodo = get_head();
+
   while (nodo != NULL) {
-    // paraElevar = nodo->get_data().get_val();
     result += nodo->get_data().get_val() * pow(x, nodo->get_data().get_inx());
-    nodo = nodo->get_next();  // nodo apunta al siguiente
+    // nodo apunta al siguiente
+    nodo = nodo->get_next();
   }
   
   return result;
 }
-// HAY QUE USAR EL EPS
+
 // Comparación si son iguales dos polinomios representados por listas simples
 bool SllPolynomial::IsEqual(const SllPolynomial& sllpol,
 			    const double eps) const {
-  bool differents = false;
 
+  bool differents = false;
   SllPolyNode* nodo = get_head();
   SllPolyNode* polnodo = sllpol.get_head();
 
   while (nodo != NULL && polnodo != NULL) {
-    if(nodo->get_data().get_val() != polnodo->get_data().get_val())
+
+    if (IsNotZero(nodo->get_data().get_val() - polnodo->get_data().get_val(), eps))
       differents = true;
 
     nodo = nodo->get_next();
@@ -128,59 +130,47 @@ bool SllPolynomial::IsEqual(const SllPolynomial& sllpol,
 
   return !differents;
 }
-// hay que usar el EPS porque si se suman dos cosas es 0 y no entra en suma...
 // FASE IV
+// hay que usar el EPS porque si se suman dos cosas es 0 y no entra en suma...
 // Generar nuevo polinomio suma del polinomio invocante mas otro polinomio
 void SllPolynomial::Sum(const SllPolynomial& sllpol,
 			SllPolynomial& sllpolsum,
 			const double eps) {
-  // poner el código aquí
-  // se guarda en sllpolsum el resultado
+
   SllPolyNode* nodo = get_head();
   SllPolyNode* polnodo = sllpol.get_head();
   pair_double_t resultado;
 
   while (nodo != NULL && polnodo != NULL) {
-    // como cojo las x...
-    // if(nodo->get_data().get_inx() == polnodo->get_data().get_inx()) {
-    //   resultado.set(nodo->get_data().get_val() + polnodo->get_data().get_val(), nodo->get_data().get_inx());
-    //   SllPolyNode* aux = new SllPolyNode(resultado);
-    //   sllpolsum.push_front(aux);
 
-    //   nodo = nodo->get_next();
-    //   polnodo = polnodo->get_next();
-    // }
-    std::cout << nodo->get_data().get_inx() << " " << polnodo->get_data().get_inx() << std::endl;
-    if (nodo->get_data().get_inx() > polnodo->get_data().get_inx()) {
-      // resultado.set(nodo->get_data().get_val(), nodo->get_data().get_inx());
-      polnodo = polnodo->get_next();
-    } 
-    
-    if(nodo->get_data().get_inx() < polnodo->get_data().get_inx()) {
-      // resultado.set(polnodo->get_data().get_inx(), polnodo->get_data().get_inx());
-      nodo = nodo->get_next();
-    } //else {
-    //   resultado.set(nodo->get_data().get_val() + polnodo->get_data().get_val(), nodo->get_data().get_inx());
-    // }
-    
-    if(nodo->get_data().get_inx() == polnodo->get_data().get_inx()) {
-      resultado.set(nodo->get_data().get_val() + polnodo->get_data().get_val(), nodo->get_data().get_inx());
+    if (IsNotZero(nodo->get_data().get_val() + polnodo->get_data().get_val(), eps)) {
+      // std::cout << nodo->get_data().get_inx() << " " << polnodo->get_data().get_inx() << std::endl;
+      if (nodo->get_data().get_inx() > polnodo->get_data().get_inx()) {
+        resultado.set(polnodo->get_data().get_val(), polnodo->get_data().get_inx());
+        polnodo = polnodo->get_next();
+      } 
+
+      if (nodo->get_data().get_inx() < polnodo->get_data().get_inx()) {
+        resultado.set(nodo->get_data().get_val(), nodo->get_data().get_inx());
+        SllPolyNode* aux = new SllPolyNode(resultado);
+        sllpolsum.push_front(aux);
+        nodo = nodo->get_next();
+      }
+      // std::cout << nodo->get_data().get_inx() << "...." << polnodo->get_data().get_inx() << std::endl;
+      if (nodo->get_data().get_inx() == polnodo->get_data().get_inx()) {
+        if(IsNotZero(nodo->get_data().get_val() + polnodo->get_data().get_val(), eps)) {
+        resultado.set(nodo->get_data().get_val() + polnodo->get_data().get_val(), nodo->get_data().get_inx());
+        }
+      }
+
+      // std::cout << nodo->get_data().get_inx() << "...." << polnodo->get_data().get_inx() << std::endl;
       SllPolyNode* aux = new SllPolyNode(resultado);
       sllpolsum.push_front(aux);
 
       nodo = nodo->get_next();
       polnodo = polnodo->get_next();
     }
-
-    std::cout << nodo->get_data().get_inx() << "...." << polnodo->get_data().get_inx() << std::endl;
-    // SllPolyNode* aux = new SllPolyNode(resultado);
-    // sllpolsum.push_front(aux);
-
-    // nodo = nodo->get_next();
-    // polnodo = polnodo->get_next();
   }
-
-
 }
 
 
