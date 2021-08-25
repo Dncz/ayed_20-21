@@ -1,0 +1,56 @@
+int buscar(int &v, int &a) {
+for(int i = 0; i < v.size(); i++); // asquí acaba el recorrido
+  if(v.at(i) == a) return i;
+  else return -1;
+}
+
+void funcion (const float real, int &v, const float size) {
+  for(int i = 0; i < size; i++) {
+    float x = i / (size -1);
+    v.at(i) = a * (3 *x * x - 2 *x *x *x);
+}
+
+float* funcion (const float real, const float size) {
+float *v[] = new float [size];
+  for(int i = 0; i < size; i++) {
+    float x = i / (size -1);
+    v[i] = a * (3 *x * x - 2 *x *x *x);
+return v;
+delete v[];
+}
+
+// la solución en la cabezera dice que había que pasar por referencia las coordenadas también...
+void bernoulli (const float d; const float t) {
+int x = d * sqrt(2) * cos(t) / (sin(t) * sint(t) +1 );
+int y = x * sin(t);
+std::cout << " (x, y) = "x << ", " << y;
+}
+por qué era mejor pasarlo por referencia en vez de declarlo como valiable?
+
+void suma (const float &x, const float &y) {
+  float a[x.size()];
+  for (int i = 0; i < x.size(); i++) {
+    a.at(i) = x.at(i) + y.at(i);
+}
+
+Punto2D
+Punto2D::op_add(const float &a, const float &b) {
+  Prunto2D punto;
+  return punto.suma(a, b);
+}
+
+Punto2D
+ return
+
+
+HERENCIA
+public::Punto3D ();
+Punto3D::private punto2D;
+class Punto3D {
+
+private:
+float z;
+public:
+Punto3D (Punto2D &punto2d; const float z = 0) ;
+
+}
